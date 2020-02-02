@@ -50,11 +50,11 @@ def circle(r,n):
 
 
 #Adds noise to the points in the circle.
-def procedural_generation(r,n,X,Y,n_iter,gain):
+def procedural_generation(r,n,X,Y,n_iter,gain,debug):
     max_distance = n/(2*r)
     i=0
     
-    pivot=np.random.randint(1,n-1)
+    pivot=np.random.randint(2,n-2)
     runner=pivot + pow(-1,np.random.randint(1,2)) * np.random.randint(1,max_distance)
     while(n_iter>i):
         #Modify the pivot and the runner
@@ -65,7 +65,7 @@ def procedural_generation(r,n,X,Y,n_iter,gain):
         Y[runner] = Y[runner] + (0.5 -np.random.rand()) * r/n * gain
         
         if pivot == runner or pivot == (runner +1) or pivot == (runner-1):
-            pivot=np.random.randint(1,n-1)
+            pivot=np.random.randint(2,n-2)
             runner=pivot + pow(-1,np.random.randint(1,2)) * np.random.randint(1,max_distance)
         else:
             if pivot > runner:
@@ -88,10 +88,11 @@ def procedural_generation(r,n,X,Y,n_iter,gain):
         
         
         i=i+1
-        print('Nº iter:',i)
-        plt.plot(X,Y, label='linear')
-        plt.show()
-        
+        if debug:
+            print('Nº iter:',i)
+            plt.plot(X,Y, label='linear')
+            plt.show()
+            
     return X,Y
             
 def simplified_euclidean_distance(x1,x2,y1,y2):
@@ -105,46 +106,64 @@ def reorder_points(X,Y,n_changes,debug):
     for j in range(0,len(X)-1):
             fitness[i] = fitness[i] + simplified_euclidean_distance(X[j],X[j+1],Y[j],Y[j+1]) 
             
-    is_stuck=False
-    
-    while i<n_changes-1 and not is_stuck:
-        is_stuck = False 
-        j=np.random.randint(0,len(X)-3)
-    
-        current_distance = simplified_euclidean_distance(X[j],X[j+1],Y[j],Y[j+1]) + simplified_euclidean_distance(X[j+2],X[j+3],Y[j+2],Y[j+3])  
-        proposed_distance = simplified_euclidean_distance(X[j],X[j+2],Y[j],Y[j+2]) + simplified_euclidean_distance(X[j+1],X[j+3],Y[j+1],Y[j+3])  
-        #print(current_distance,'  vs   ', proposed_distance)
-        #print('i:',i,' j:',j,' len:',len(X),' n_chg:',n_changes)
-        #print()
-        if proposed_distance < current_distance:
-            fitness[i+1] = fitness[i] - current_distance + proposed_distance
-            is_stuck = False
+    j=1
+    while i<n_changes-1 and j<len(X)-4:
+                
         
-            X[j+1],X[j+2] = X[j+2],X[j+1]
-            Y[j+1],Y[j+2] = Y[j+2],Y[j+1]
+            current_distance = simplified_euclidean_distance(X[j],X[j+1],Y[j],Y[j+1]) + simplified_euclidean_distance(X[j+2],X[j+3],Y[j+2],Y[j+3])  
+            proposed_distance = simplified_euclidean_distance(X[j],X[j+2],Y[j],Y[j+2]) + simplified_euclidean_distance(X[j+1],X[j+3],Y[j+1],Y[j+3])  
+            #print(current_distance,'  vs   ', proposed_distance)
+            #print('i:',i,' j:',j,' len:',len(X),' n_chg:',n_changes)
+            #print()
+            if proposed_distance < current_distance:
+                fitness[i+1] = fitness[i] - current_distance + proposed_distance
             
-            print(current_distance,'  vs   ', proposed_distance)
-            print('i:',i,' j:',j,' len:',len(X),' n_chg:',n_changes)
-            print()
-            
-            
-            if debug:
+                X[j+1],X[j+2] = X[j+2],X[j+1]
+                Y[j+1],Y[j+2] = Y[j+2],Y[j+1]
+                
+               
+                
+                if debug:
+                    print(current_distance,'  vs   ', proposed_distance)
+                    print('i:',i,' j:',j,' len:',len(X),' n_chg:',n_changes)
+                    print()
+                    
                     plt.plot(X,Y, label='linear')
-    
+                    
                     plt.show()
                     print('Fitness:',fitness[i])
-            print(i,'/',n_changes)
-                #input("Press Enter to continue...")
+                    print(i,'/',n_changes)
+                    #input("Press Enter to continue...")
+                i=i+1
+                j=0
             
-        i=i+1
+            j=j+1
+
         
-        
+    fitness = fitness[fitness>0]
+    
     return X,Y,fitness    
         
 
-# Sustituir el funcionamiento por sleccion de un punto aleatorio con al menos hasta 4 puntos hasta el final
-# Comprobar si el link 1-3 + 2-4 es mejor que  1-2 3-4, en ese caso intercambiar 2 con 3
+
+def generate_border(radius = 10,n_dots = 100,n_iter = 50,gain = 13,n_changes = 10000, debug = False):
+    X,Y = circle(radius,n_dots)
+    
+    X,Y = procedural_generation(radius,n_dots,X,Y,n_iter,gain,debug)
+    
+    X,Y,fitness = reorder_points(X,Y,n_changes, debug =debug)
+    
+    if debug:
+        plt.plot(range(len(fitness)),fitness, label = 'linear')
         
+        plt.show()
+        
+        plt.plot(X,Y, label='linear')
+        
+        plt.show()
+    
+    return X,Y,fitness
+
         
             
         
