@@ -166,8 +166,52 @@ def generate_border(radius = 10,n_dots = 100,n_iter = 50,gain = 13,n_changes = 1
 
         
             
-        
+
+
+def segment_get_break_points(X,Y,Xi,Yi,max_amplitude,min_amplitude):
+    first_external_point = np.random.randint(1,len(X)-1)
     
+    x_first_external_point = X[first_external_point]
+    y_first_external_point = Y[first_external_point]
+    
+    distance_to_second_external = np.random.randint(min_amplitude,max_amplitude)
+    
+    second_external_point = (first_external_point+distance_to_second_external)%len(X)
+    
+    x_second_external_point = X[second_external_point]
+    y_second_external_point = Y[second_external_point]
+
+    
+    #detect now near points
+    
+    distance_from_first_external_to_internals = np.zeros(len(Xi))
+    
+    for i in range(0,len(distance_from_first_external_to_internals)):
+        x_first_internal_point  = Xi[i]
+        y_first_internal_point  = Yi[i]
+        distance_from_first_external_to_internals[i] = simplified_euclidean_distance(x_first_external_point,
+                                                                                     y_first_external_point,
+                                                                                     x_first_internal_point,
+                                                                                     y_first_internal_point)
+    
+    first_internal_point =  np.where(np.argpartition(distance_from_first_external_to_internals,5)==np.random.randint(0,5))[0][0]
+    
+    
+    distance_from_second_external_to_internals = np.zeros(len(Xi))
+    
+    for i in range(0,len(distance_from_second_external_to_internals)):
+        x_second_internal_point  = Xi[i]
+        y_second_internal_point  = Yi[i]
+        distance_from_second_external_to_internals[i] = simplified_euclidean_distance(x_second_external_point,
+                                                                                     y_second_external_point,
+                                                                                     x_second_internal_point,
+                                                                                     y_second_internal_point)
+        
+    second_internal_point =  np.where(np.argpartition(distance_from_second_external_to_internals,5)==np.random.randint(0,5))[0][0]
+    
+    
+    
+    return first_external_point,second_external_point,first_internal_point, second_internal_point
     
     
     
