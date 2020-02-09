@@ -190,11 +190,12 @@ def segment_get_break_points(X,Y,Xi,Yi,max_amplitude,min_amplitude):
         x_first_internal_point  = Xi[i]
         y_first_internal_point  = Yi[i]
         distance_from_first_external_to_internals[i] = simplified_euclidean_distance(x_first_external_point,
-                                                                                     y_first_external_point,
                                                                                      x_first_internal_point,
+                                                                                     y_first_external_point,
                                                                                      y_first_internal_point)
     
-    first_internal_point =  np.where(np.argpartition(distance_from_first_external_to_internals,5)==np.random.randint(0,5))[0][0]
+    candidates =np.argpartition(distance_from_first_external_to_internals,5)[0:5]
+    first_internal_point = candidates[np.random.randint(0,5)]
     
     
     distance_from_second_external_to_internals = np.zeros(len(Xi))
@@ -203,12 +204,12 @@ def segment_get_break_points(X,Y,Xi,Yi,max_amplitude,min_amplitude):
         x_second_internal_point  = Xi[i]
         y_second_internal_point  = Yi[i]
         distance_from_second_external_to_internals[i] = simplified_euclidean_distance(x_second_external_point,
-                                                                                     y_second_external_point,
                                                                                      x_second_internal_point,
+                                                                                     y_second_external_point,
                                                                                      y_second_internal_point)
         
-    second_internal_point =  np.where(np.argpartition(distance_from_second_external_to_internals,5)==np.random.randint(0,5))[0][0]
-    
+    candidates =np.argpartition(distance_from_second_external_to_internals,5)[0:5]
+    second_internal_point = candidates[np.random.randint(0,5)]
     
     
     return first_external_point,second_external_point,first_internal_point, second_internal_point
