@@ -33,11 +33,18 @@ Xi,Yi, fitness_i = bm.generate_border(radius/2,n_dots-50,n_iter, gain/2, n_chang
 plt.plot(Xi,Yi, label='linear')
 
 
+n_segments = 4
+max_amplitude=round(n_dots/10)
+min_amplitude=round(n_dots/4)
 
-br_point_ex1,br_point_ex2, br_point_in1,br_point_in2 = bm.segment_get_break_points(X,Y,Xi,Yi,round(n_dots/4),round(n_dots/10))
+external_list_first_point,external_list_second_point,internal_list_first_point,internal_list_second_point = bm.get_n_segment_break_points(X,Y,Xi,Yi,min_amplitude,max_amplitude,n_segments,100)
+
+ 
+for i in range(len(external_list_first_point)):
+    plt.plot([X[external_list_first_point[i]],Xi[internal_list_first_point[i]]],[Y[external_list_first_point[i]],Yi[internal_list_first_point[i]]],label='linear')
+    plt.plot([X[external_list_second_point[i]],Xi[internal_list_second_point[i]]],[Y[external_list_second_point[i]],Yi[internal_list_second_point[i]]],label='linear')
+ 
 
 
-plt.plot([X[br_point_ex1],Xi[br_point_in1]],[Y[br_point_ex1],Yi[br_point_in1]], label='linear')
-plt.plot([X[br_point_ex2],Xi[br_point_in2]],[Y[br_point_ex2],Yi[br_point_in2]], label='linear')
 
 plt.show()
