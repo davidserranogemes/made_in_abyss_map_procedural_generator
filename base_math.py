@@ -276,9 +276,45 @@ def get_n_segment_break_points(X,Y,Xi,Yi,max_amplitude,min_amplitude,n_segments,
     
                 
     return external_list_first_point,external_list_second_point,internal_list_first_point,internal_list_second_point
-                    
-                
+
+
+def split_section(X,Xi,Y,Yi,br_point_ex1,br_point_ex2, br_point_in1,br_point_in2):
+     
+    real_len_1st=0
+    if br_point_ex1 < br_point_ex2:
+        real_len_1st = br_point_ex2 - br_point_ex1 
+    else:
+        real_len_1st = len(X)-br_point_ex1 + br_point_ex2 
     
+    real_len_2nd = 0
+    if br_point_in1 < br_point_in2:
+        real_len_2nd = br_point_in2 - br_point_in1 
+    else:
+        real_len_2nd = len(Xi)-br_point_in1 + br_point_in2 
+        
+    new_X = np.zeros(real_len_1st+real_len_2nd+1)
+    new_Y = np.zeros(real_len_1st+real_len_2nd+1)
+    
+    
+    
+    if br_point_ex1 < br_point_ex2:
+        new_X[0:real_len_1st] = X[br_point_ex1:br_point_ex2]
+        new_Y[0:real_len_1st] = Y[br_point_ex1:br_point_ex2]
+    else:
+        new_X[0:real_len_1st] = np.concatenate((X[br_point_ex1:len(X)],X[0:br_point_ex2]),axis = 0)
+        new_Y[0:real_len_1st] = np.concatenate((Y[br_point_ex1:len(X)],Y[0:br_point_ex2]),axis = 0)
+    
+    if br_point_in1 < br_point_in2:
+        new_X[real_len_1st:real_len_1st+real_len_2nd] = Xi[br_point_in1:br_point_in2][::-1]
+        new_Y[real_len_1st:real_len_1st+real_len_2nd] = Yi[br_point_in1:br_point_in2][::-1]
+    else:
+        new_X[real_len_1st:real_len_1st+real_len_2nd] = np.concatenate((Xi[br_point_in1:len(X)],Xi[0:br_point_in2]),axis = 0)[::-1]
+        new_Y[real_len_1st:real_len_1st+real_len_2nd] = np.concatenate((Yi[br_point_in1:len(X)],Yi[0:br_point_in2]),axis = 0)[::-1]
+    
+    new_X[real_len_1st+real_len_2nd] = X[br_point_ex1]
+    new_Y[real_len_1st+real_len_2nd] = Y[br_point_ex1]
+    
+    return new_X,new_Y
     
     
 
