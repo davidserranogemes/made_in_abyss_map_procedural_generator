@@ -44,7 +44,17 @@ for i in range(len(external_list_first_point)):
     plt.plot([X[external_list_first_point[i]],Xi[internal_list_first_point[i]]],[Y[external_list_first_point[i]],Yi[internal_list_first_point[i]]],label='linear')
     plt.plot([X[external_list_second_point[i]],Xi[internal_list_second_point[i]]],[Y[external_list_second_point[i]],Yi[internal_list_second_point[i]]],label='linear')
  
+plt.show()
 
+br_point_ex1 = external_list_first_point[0]
+br_point_ex2 = external_list_second_point[0]
+br_point_in1 = internal_list_first_point[0]
+br_point_in2 =internal_list_second_point[0]
 
+new_X,new_Y = bm.split_section(X,Xi,Y,Yi,  external_list_first_point[0],
+                                        external_list_second_point[0],
+                                        internal_list_first_point[0],
+                                        internal_list_second_point[0])
 
+plt.plot(new_X,new_Y,label = 'linear')
 plt.show()
