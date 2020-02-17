@@ -216,4 +216,70 @@ def segment_get_break_points(X,Y,Xi,Yi,max_amplitude,min_amplitude):
     
     
     
+def get_n_segment_break_points(X,Y,Xi,Yi,max_amplitude,min_amplitude,n_segments, n_tries = 25,debug=False):
+    
+    external_list_first_point = np.ones(n_segments, dtype=int) * -1
+    external_list_second_point = np.ones(n_segments, dtype=int) * -1
+    internal_list_first_point = np.ones(n_segments, dtype=int) * -1
+    internal_list_second_point = np.ones(n_segments, dtype=int) * -1
+    
+    
+    
+    i = 0
+    k= 0
+    keep_trying = True
+    while(keep_trying):
+        if i>=n_tries:
+            keep_trying = False
+            
+        else:
+            if k>=n_segments:
+                keep_trying = False
+            else:
+                br_point_ex1,br_point_ex2, br_point_in1,br_point_in2 = segment_get_break_points(X,Y,Xi,Yi,max_amplitude,min_amplitude)
+                
+                valid = True
+                
+                for j in range(n_segments):
+                    
+                    if external_list_first_point[j] < br_point_ex1 and br_point_ex1 < external_list_second_point[j]:
+                        valid = False
+                    if external_list_first_point[j] < br_point_ex2 and br_point_ex2 < external_list_second_point[j]:
+                        valid = False
+                    if internal_list_first_point[j] < br_point_in1 and br_point_in1 < internal_list_second_point[j]:
+                        valid = False
+                    if internal_list_first_point[j] < br_point_in2 and br_point_in2 < internal_list_second_point[j]:
+                        valid = False
+                    
+                    if debug:
+                        print("----------------------------------------------------------------------------------------------")
+                        print('EX1:',external_list_first_point[j],'    BR_EX1:',br_point_ex1,'    EX2:',external_list_second_point[j],)
+                        print('EX1:',external_list_first_point[j],'    BR_EX2:',br_point_ex2,'    EX2:',external_list_second_point[j],)
+                        print('IN1:',internal_list_first_point[j],'    BR_IN1:',br_point_in1,'    IN2:',internal_list_second_point[j],)
+                        print('IN1:',internal_list_first_point[j],'    BR_IN1:',br_point_in2,'    IN2:',internal_list_second_point[j],)
+                        print("----------------------------------------------------------------------------------------------")
+                        
+                    
+                
+                if valid:
+                    external_list_first_point[k]=br_point_ex1
+                    external_list_second_point[k]=br_point_ex2
+                    internal_list_first_point[k]=br_point_in1
+                    internal_list_second_point[k]=br_point_in2
+                    k=k+1
+                
+                i=i+1
+    external_list_first_point=external_list_first_point[:k]
+    external_list_second_point=external_list_second_point[:k]
+    internal_list_first_point=internal_list_first_point[:k]
+    internal_list_second_point=internal_list_second_point[:k]
+    
+                
+    return external_list_first_point,external_list_second_point,internal_list_first_point,internal_list_second_point
+                    
+                
+    
+    
+    
+
 
