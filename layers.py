@@ -5,7 +5,7 @@ Created on Thu Feb 27 20:26:24 2020
 @author: david
 """
 
-class generic_layer():
+class section():
        
     
     def __init__(self,X,Y,height=0,slope=0):
@@ -15,13 +15,13 @@ class generic_layer():
         self.__slope = slope
         
     
-    def get_layer_points(self):
+    def get_section_points(self):
         return self.__X,self.__Y
     
-    def get_layer_slope(self):
+    def get_section_slope(self):
         return self.__slope
     
-    def get_layer_height(self):
+    def get_section_height(self):
         return self.__height
-        
-x = generic_layer() 
+    
+
