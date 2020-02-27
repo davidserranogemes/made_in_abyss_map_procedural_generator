@@ -243,14 +243,30 @@ def get_n_segment_break_points(X,Y,Xi,Yi,max_amplitude,min_amplitude,n_segments,
                 
                 for j in range(n_segments):
                     
-                    if external_list_first_point[j] < br_point_ex1 and br_point_ex1 < external_list_second_point[j]:
+                    
+                    
+                    # Checks if lines cross
+                    if external_list_first_point[j] <= br_point_ex1 and br_point_ex1 <= external_list_second_point[j]:
                         valid = False
-                    if external_list_first_point[j] < br_point_ex2 and br_point_ex2 < external_list_second_point[j]:
+                    if external_list_first_point[j] <= br_point_ex2 and br_point_ex2 <= external_list_second_point[j]:
                         valid = False
-                    if internal_list_first_point[j] < br_point_in1 and br_point_in1 < internal_list_second_point[j]:
+                    if internal_list_first_point[j] <= br_point_in1 and br_point_in1 <= internal_list_second_point[j]:
                         valid = False
-                    if internal_list_first_point[j] < br_point_in2 and br_point_in2 < internal_list_second_point[j]:
+                    if internal_list_first_point[j] <= br_point_in2 and br_point_in2 <= internal_list_second_point[j]:
                         valid = False
+                    
+                    if br_point_ex1 <= external_list_first_point[j] and external_list_first_point[j] <= br_point_ex2:
+                        valid = False
+                    if br_point_ex1 <= external_list_second_point[j] and external_list_second_point[j] <= br_point_ex2:
+                        valid = False
+                    if br_point_in1 <= internal_list_first_point[j] and internal_list_first_point[j] <= br_point_in2:
+                        valid = False
+                    if br_point_in1 <= internal_list_second_point[j] and internal_list_second_point[j] <= br_point_in2:
+                        valid = False
+                        
+                    
+                    
+                    
                     
                     if debug:
                         print("----------------------------------------------------------------------------------------------")
@@ -320,10 +336,10 @@ def split_section(X,Xi,Y,Yi,br_point_ex1,br_point_ex2, br_point_in1,br_point_in2
     
 """
 This function creates n sections, of diferent amplitudes and gives them the
-same height and a different inclination
+same height and a different slope
 
 """
-def get_all_splits(X,Xi,Y,Yi,min_amplitude, max_amplitude,n_segments,n_tries=100):
+def get_all_splits(X,Xi,Y,Yi,min_amplitude, max_amplitude,n_segments,n_tries=100,slope_modifier=2,height=0):
     
     external_list_first_point,external_list_second_point,internal_list_first_point,internal_list_second_point = get_n_segment_break_points(X,Y,Xi,Yi,min_amplitude,max_amplitude,n_segments,n_tries)
 
@@ -334,7 +350,8 @@ def get_all_splits(X,Xi,Y,Yi,min_amplitude, max_amplitude,n_segments,n_tries=100
                                                 external_list_second_point[i],
                                                 internal_list_first_point[i],
                                                 internal_list_second_point[i])
-        aux_section = ly.section(new_X,new_Y)
+        slope = np.random.rand()/slope_modifier*np.pi
+        aux_section = ly.section(new_X,new_Y,slope=slope,height=height)
     
         section_list.append(aux_section)
     
