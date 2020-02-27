@@ -56,7 +56,7 @@ section_list = bm.get_all_splits(X,Xi,Y,Yi,min_amplitude, max_amplitude,n_segmen
 
 
 for i in range(n_segments):
-    X_values,Y_values = section_list[i].get_section_points()
+    X_values,Y_values,Z_values = section_list[i].get_section_points()
     
     plt.plot(X_values,Y_values)
 
