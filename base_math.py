@@ -318,7 +318,11 @@ def split_section(X,Xi,Y,Yi,br_point_ex1,br_point_ex2, br_point_in1,br_point_in2
     return new_X,new_Y
     
     
+"""
+This function creates n sections, of diferent amplitudes and gives them the
+same height and a different inclination
 
+"""
 def get_all_splits(X,Xi,Y,Yi,min_amplitude, max_amplitude,n_segments,n_tries=100):
     
     external_list_first_point,external_list_second_point,internal_list_first_point,internal_list_second_point = get_n_segment_break_points(X,Y,Xi,Yi,min_amplitude,max_amplitude,n_segments,n_tries)
