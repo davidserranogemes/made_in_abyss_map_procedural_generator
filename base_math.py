@@ -318,4 +318,17 @@ def split_section(X,Xi,Y,Yi,br_point_ex1,br_point_ex2, br_point_in1,br_point_in2
     
     
 
+def get_all_splits(X,Xi,Y,Yi,min_amplitude, max_amplotide,n_segments,n_tries=100):
+    
+    external_list_first_point,external_list_second_point,internal_list_first_point,internal_list_second_point = bm.get_n_segment_break_points(X,Y,Xi,Yi,min_amplitude,max_amplitude,n_segments,n_tries)
+
+    X_maxtrix = np.zeros(())
+
+    for i in range(0,n_segments):
+        new_X,new_Y = bm.split_section(X,Xi,Y,Yi,  external_list_first_point[i],
+                                                external_list_second_point[i],
+                                                internal_list_first_point[i],
+                                                internal_list_second_point[i])
+    
+        
 
