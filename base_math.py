@@ -241,39 +241,71 @@ def get_n_segment_break_points(X,Y,Xi,Yi,max_amplitude,min_amplitude,n_segments,
                 
                 valid = True
                 
-                for j in range(n_segments):
+                for j in range(k):
                     
                     
                     
-                    # Checks if lines cross
-                    if external_list_first_point[j] <= br_point_ex1 and br_point_ex1 <= external_list_second_point[j]:
-                        valid = False
-                    if external_list_first_point[j] <= br_point_ex2 and br_point_ex2 <= external_list_second_point[j]:
-                        valid = False
-                    if internal_list_first_point[j] <= br_point_in1 and br_point_in1 <= internal_list_second_point[j]:
-                        valid = False
-                    if internal_list_first_point[j] <= br_point_in2 and br_point_in2 <= internal_list_second_point[j]:
-                        valid = False
-                    
-                    if br_point_ex1 <= external_list_first_point[j] and external_list_first_point[j] <= br_point_ex2:
-                        valid = False
-                    if br_point_ex1 <= external_list_second_point[j] and external_list_second_point[j] <= br_point_ex2:
-                        valid = False
-                    if br_point_in1 <= internal_list_first_point[j] and internal_list_first_point[j] <= br_point_in2:
-                        valid = False
-                    if br_point_in1 <= internal_list_second_point[j] and internal_list_second_point[j] <= br_point_in2:
-                        valid = False
+                    if external_list_first_point[j] < external_list_second_point[j]:
                         
+                        # Checks if lines cross
+                        if external_list_first_point[j] <= br_point_ex1 and br_point_ex1 <= external_list_second_point[j]:
+                            valid = False
+                        if external_list_first_point[j] <= br_point_ex2 and br_point_ex2 <= external_list_second_point[j]:
+                            valid = False
+                        if internal_list_first_point[j] <= br_point_in1 and br_point_in1 <= internal_list_second_point[j]:
+                            valid = False
+                        if internal_list_first_point[j] <= br_point_in2 and br_point_in2 <= internal_list_second_point[j]:
+                            valid = False
+                       
+                    else:
+                        # Checks if lines cross
+                        #if (external_list_first_point[j] <= br_point_ex1 and  br_point_ex1 < len(X)) or ( 0< br_point_ex1 and  br_point_ex1 <= external_list_second_point[j]) :
+                        if (external_list_first_point[j] <= br_point_ex1 and  br_point_ex1 < len(X)) or (br_point_ex1 <= external_list_second_point[j]) :
+                            valid = False
+                        #if (external_list_first_point[j] <= br_point_ex2 and  br_point_ex2 < len(X)) or ( 0< br_point_ex2 and  br_point_ex2 <= external_list_second_point[j]) :
+                        if (external_list_first_point[j] <= br_point_ex2 and  br_point_ex2 < len(X)) or (br_point_ex2 <= external_list_second_point[j]) :
+                            valid = False
+                        #if (internal_list_first_point[j] <= br_point_in1 and  br_point_in1 < len(Xi)) or ( 0< br_point_in1 and  br_point_ex1 <= internal_list_second_point[j]) :
+                        if (internal_list_first_point[j] <= br_point_in1 and  br_point_in1 < len(Xi)) or (br_point_ex1 <= internal_list_second_point[j]) :
+                            valid = False
+                        #if (internal_list_first_point[j] <= br_point_in2 and  br_point_in2 < len(Xi)) or ( 0< br_point_in2 and  br_point_ex2 <= internal_list_second_point[j]) :
+                        if (internal_list_first_point[j] <= br_point_in2 and  br_point_in2 < len(Xi)) or ( br_point_ex2 <= internal_list_second_point[j]) :
+                            valid = False
+                        
+                       
                     
-                    
+                    if br_point_ex1 < br_point_ex2:
+                     
+                        if br_point_ex1 <= external_list_first_point[j] and external_list_first_point[j] <= br_point_ex2:
+                            valid = False
+                        if br_point_ex1 <= external_list_second_point[j] and external_list_second_point[j] <= br_point_ex2:
+                            valid = False
+                        if br_point_in1 <= internal_list_first_point[j] and internal_list_first_point[j] <= br_point_in2:
+                            valid = False
+                        if br_point_in1 <= internal_list_second_point[j] and internal_list_second_point[j] <= br_point_in2:
+                            valid = False
+                    else:
+                        #if (br_point_ex1 <= external_list_first_point[j] and external_list_first_point[j] < len(X)) or ( 0 < external_list_first_point[j] and external_list_first_point[j] <= br_point_ex2):
+                        if (br_point_ex1 <= external_list_first_point[j] and external_list_first_point[j] < len(X)) or (external_list_first_point[j] <= br_point_ex2):
+                            valid = False
+                        #if (br_point_ex1 <= external_list_second_point[j] and external_list_second_point[j] < len(X)) or ( 0 < external_list_second_point[j] and external_list_second_point[j] <= br_point_ex2):
+                        if (br_point_ex1 <= external_list_second_point[j] and external_list_second_point[j] < len(X)) or (external_list_second_point[j] <= br_point_ex2):
+                            valid = False
+                        #if (br_point_in1 <= internal_list_first_point[j] and internal_list_first_point[j] < len(Xi)) or ( 0 < internal_list_first_point[j] and internal_list_first_point[j] <= br_point_in2):
+                        if (br_point_in1 <= internal_list_first_point[j] and internal_list_first_point[j] < len(Xi)) or (internal_list_first_point[j] <= br_point_in2):
+                            valid = False
+                        #if (br_point_in1 <= internal_list_second_point[j] and internal_list_second_point[j] < len(Xi)) or ( 0 < internal_list_second_point[j] and internal_list_second_point[j] <= br_point_in2):
+                        if (br_point_in1 <= internal_list_second_point[j] and internal_list_second_point[j] < len(Xi)) or (internal_list_second_point[j] <= br_point_in2):
+                            valid = False 
+                                
                     
                     
                     if debug:
                         print("----------------------------------------------------------------------------------------------")
-                        print('EX1:',external_list_first_point[j],'    BR_EX1:',br_point_ex1,'    EX2:',external_list_second_point[j],)
-                        print('EX1:',external_list_first_point[j],'    BR_EX2:',br_point_ex2,'    EX2:',external_list_second_point[j],)
-                        print('IN1:',internal_list_first_point[j],'    BR_IN1:',br_point_in1,'    IN2:',internal_list_second_point[j],)
-                        print('IN1:',internal_list_first_point[j],'    BR_IN1:',br_point_in2,'    IN2:',internal_list_second_point[j],)
+                        print('EX1:',external_list_first_point[j],'    BR_EX1:',br_point_ex1,'    EX2:',external_list_second_point[j],"      EX MAX:", len(X))
+                        print('EX1:',external_list_first_point[j],'    BR_EX2:',br_point_ex2,'    EX2:',external_list_second_point[j],"      EX MAX:", len(X))
+                        print('IN1:',internal_list_first_point[j],'    BR_IN1:',br_point_in1,'    IN2:',internal_list_second_point[j],"      IN MAX:", len(Xi))
+                        print('IN1:',internal_list_first_point[j],'    BR_IN1:',br_point_in2,'    IN2:',internal_list_second_point[j],"      IN MAX:", len(Xi))
                         print("----------------------------------------------------------------------------------------------")
                         
                     
@@ -296,7 +328,8 @@ def get_n_segment_break_points(X,Y,Xi,Yi,max_amplitude,min_amplitude,n_segments,
 
 
 def split_section(X,Xi,Y,Yi,br_point_ex1,br_point_ex2, br_point_in1,br_point_in2):
-     
+    
+    
     real_len_1st=0
     if br_point_ex1 < br_point_ex2:
         real_len_1st = br_point_ex2 - br_point_ex1 
@@ -331,6 +364,7 @@ def split_section(X,Xi,Y,Yi,br_point_ex1,br_point_ex2, br_point_in1,br_point_in2
     new_X[real_len_1st+real_len_2nd] = X[br_point_ex1]
     new_Y[real_len_1st+real_len_2nd] = Y[br_point_ex1]
     
+    
     return new_X,new_Y
     
     
@@ -339,13 +373,15 @@ This function creates n sections, of diferent amplitudes and gives them the
 same height and a different slope
 
 """
-def get_all_splits(X,Xi,Y,Yi,min_amplitude, max_amplitude,n_segments,n_tries=100,slope_modifier=2,height=0):
+def get_all_section_for_height(X,Xi,Y,Yi,min_amplitude, max_amplitude,n_segments,n_tries=100,slope_modifier=2,height=0,debug=False):
     
-    external_list_first_point,external_list_second_point,internal_list_first_point,internal_list_second_point = get_n_segment_break_points(X,Y,Xi,Yi,min_amplitude,max_amplitude,n_segments,n_tries)
+    external_list_first_point,external_list_second_point,internal_list_first_point,internal_list_second_point = get_n_segment_break_points(X,Y,Xi,Yi,min_amplitude,max_amplitude,n_segments,n_tries,debug=debug)
+
+    real_n_segments = len(external_list_first_point)
 
     section_list = []
 
-    for i in range(0,n_segments):
+    for i in range(0,real_n_segments):
         new_X,new_Y = split_section(X,Xi,Y,Yi,  external_list_first_point[i],
                                                 external_list_second_point[i],
                                                 internal_list_first_point[i],
@@ -355,5 +391,5 @@ def get_all_splits(X,Xi,Y,Yi,min_amplitude, max_amplitude,n_segments,n_tries=100
     
         section_list.append(aux_section)
     
-    return section_list
+    return section_list,real_n_segments
 
