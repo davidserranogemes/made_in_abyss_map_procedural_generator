@@ -46,18 +46,44 @@ for i in range(len(external_list_first_point)):
  
 plt.show()
 
+"""
 br_point_ex1 = external_list_first_point[0]
 br_point_ex2 = external_list_second_point[0]
 br_point_in1 = internal_list_first_point[0]
 br_point_in2 =internal_list_second_point[0]
+"""
+
+section_list, real_n_segment = bm.get_all_section_for_height(X,Xi,Y,Yi,min_amplitude, max_amplitude,n_segments,n_tries=100)
 
 
-section_list = bm.get_all_splits(X,Xi,Y,Yi,min_amplitude, max_amplitude,n_segments,n_tries=100)
-
-
-for i in range(n_segments):
+for i in range(real_n_segment):
     X_values,Y_values,Z_values = section_list[i].get_section_points()
     
     plt.plot(X_values,Y_values)
 
 plt.show()
+
+
+
+
+
+
+x,y,z = section_list[0].get_section_points()
+
+
+import matplotlib.tri as tri
+#https://matplotlib.org/3.1.3/gallery/mplot3d/trisurf3d_2.html
+
+
+
+
+triang = tri.Triangulation(x, y)
+
+
+
+fig1, ax1 = plt.subplots()
+ax1.set_aspect('equal')
+tcf = ax1.tricontourf(triang, z)
+#fig1.colorbar(tcf)
+ax1.tricontour(triang, z, colors='k')
+ax1.set_title('Contour plot of section of layer')
